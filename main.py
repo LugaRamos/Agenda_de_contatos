@@ -48,7 +48,27 @@ def mostrar_contatos():
     else:
         print("Nenhum contato encontrado na agenda.")
 
-def atualizar_contato(codigo, nome, telefone, email):
+def atualizar_contato(codigo, nome):
+
+    sql = "UPDATE contatos SET nome = %s, telefone = %s, email = %s WHERE codigo = %s"
+    
+    valores = (nome, telefone, email, codigo)
+    cursor.execute(sql, valores)
+    conexao.commit()
+    
+    print("Contato atualizado")
+
+def atualizar_telefone(codigo, novo_email):
+
+    sql = "UPDATE contatos SET nome = %s, telefone = %s, email = %s WHERE codigo = %s"
+    
+    valores = (nome, telefone, email, codigo)
+    cursor.execute(sql, valores)
+    conexao.commit()
+    
+    print("Contato atualizado")
+
+def atualizar_email(codigo, nome):
 
     sql = "UPDATE contatos SET nome = %s, telefone = %s, email = %s WHERE codigo = %s"
     
@@ -80,8 +100,24 @@ while True:
 
     if opcao == "1":
         nome = input("\nNome: ")
-        telefone = input ("Telefone: ")
-        email = input("Email: ")
+
+        telefones = []
+        while True:
+            telefone = input ("Telefone: ")
+            telefone.append(telefone)
+            add_telefone = input("Deseja adicionar mais um telefone? (s/n): ")
+            
+            if add_telefone.lower() != 's':
+                break
+
+        email = []
+        while True:
+            email = input("Email: ")
+            email.append(email)
+            add_email = input("Deseja adicionar mais um email? (s/n): ")
+
+            if add_email.lower() != 's':
+                break
         cadastar_contato(nome, telefone, email)
 
     elif opcao == "2":
@@ -94,6 +130,37 @@ while True:
     elif opcao == "4":
         mostrar_contatos()
         codigo = int(input("\nDigite o código do contato que deseja alterar: "))
+
+        print("\nOpção de atualização:\n")
+        print("1. Nome")
+        print("2. Telefone")
+        print("3. Email")
+        print("4. Voltar")
+
+        escolha = input("Qual deseja atualizar: ")
+
+        if escolha == '1':
+            novo_nome = input("Novo Nome: ")
+            atualizar_contato(codigo, novo_nome)
+            mostrar_contatos()
+
+        elif escolha == '2':
+            novo_telefone = input("Novo telefone: ")
+            atualizar_contato(codigo, novo_telefone)
+            mostrar_contatos()
+
+        elif escolha == '3':
+            novo_email = input("Novo email: ")
+            atualizar_contato(codigo, novo_email)
+            mostrar_contatos()
+
+        elif escolha == '4':
+            print("Operação de atualização cancelada")
+    
+        else:
+            print("Opçao invalida. Tente novamente")
+
+
         nome = input("Novo Nome: ")
         telefone = input ("Novo Telefone: ")
         email = input("Novo Email: ")
